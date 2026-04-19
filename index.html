@@ -1,41 +1,148 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Traffic Control Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Traffic Intersection Simulator</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow-a" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow-b" aria-hidden="true"></div>
 
-<div class="bg-glow"></div>
+  <header>
+    <h1>Smart Traffic Intersection Simulator</h1>
+    <p>Expanded UI with cycle analytics, mode controls, and enhanced signal visuals</p>
+  </header>
 
-<div class="container">
+  <main class="container">
+    <section class="sim">
+      <div class="panel-heading">
+        <h2>Live Intersection</h2>
+        <span id="systemBadge" class="badge badge-off">OFFLINE</span>
+      </div>
 
-    <div class="title">
-        <h1>TRAFFIC CONTROL SYSTEM</h1>
-        <p id="status">Initializing system...</p>
-    </div>
+      <div class="intersection">
+        <div class="compass-tag compass-n">NORTH</div>
+        <div class="compass-tag compass-e">EAST</div>
+        <div class="compass-tag compass-s">SOUTH</div>
+        <div class="compass-tag compass-w">WEST</div>
 
-    <div class="dashboard">
+        <div class="road road-v" aria-hidden="true"></div>
+        <div class="road road-h" aria-hidden="true"></div>
+        <div class="sidewalk sidewalk-top" aria-hidden="true"></div>
+        <div class="sidewalk sidewalk-bottom" aria-hidden="true"></div>
+        <div class="sidewalk sidewalk-left" aria-hidden="true"></div>
+        <div class="sidewalk sidewalk-right" aria-hidden="true"></div>
+        <div class="road-center" aria-hidden="true"></div>
+        <div class="crosswalk crosswalk-top" aria-hidden="true"></div>
+        <div class="crosswalk crosswalk-bottom" aria-hidden="true"></div>
+        <div class="crosswalk crosswalk-left" aria-hidden="true"></div>
+        <div class="crosswalk crosswalk-right" aria-hidden="true"></div>
 
-        <div class="traffic-box">
-            <div class="traffic-light">
-                <div class="light red" id="red"></div>
-                <div class="light yellow" id="yellow"></div>
-                <div class="light green" id="green"></div>
-            </div>
+        <div class="signal-mast signal-ns signal-corner-tl">
+          <div class="signal-dir">N</div>
+          <div class="light-box">
+            <div id="ns-red" class="light red" aria-label="North South Red Light"></div>
+            <div id="ns-yellow" class="light yellow" aria-label="North South Yellow Light"></div>
+            <div id="ns-green" class="light green active" aria-label="North South Green Light"></div>
+          </div>
         </div>
 
-        <div class="controls">
-            <button onclick="changeLight()">NEXT SIGNAL</button>
-            <button onclick="resetLight()">RESET</button>
-            <button onclick="toggleAuto()" id="autoBtn">AUTO MODE</button>
+        <div class="signal-mast signal-ew signal-corner-tr">
+          <div class="signal-dir">E</div>
+          <div class="light-box">
+            <div id="ew-red" class="light red active" aria-label="East West Red Light"></div>
+            <div id="ew-yellow" class="light yellow" aria-label="East West Yellow Light"></div>
+            <div id="ew-green" class="light green" aria-label="East West Green Light"></div>
+          </div>
         </div>
 
-    </div>
+        <div class="signal-mast signal-corner-br">
+          <div class="signal-dir">S</div>
+          <div class="light-box">
+            <div class="light red ns-clone"></div>
+            <div class="light yellow ns-clone"></div>
+            <div class="light green ns-clone active"></div>
+          </div>
+        </div>
 
-</div>
+        <div class="signal-mast signal-corner-bl">
+          <div class="signal-dir">W</div>
+          <div class="light-box">
+            <div class="light red ew-clone active"></div>
+            <div class="light yellow ew-clone"></div>
+            <div class="light green ew-clone"></div>
+          </div>
+        </div>
+      </div>
 
-<script src="script.js"></script>
+      <div class="lane-readout">
+        <div id="ns-status" class="status go">NS: GO</div>
+        <div id="ew-status" class="status stop">EW: STOP</div>
+      </div>
 
+      <div class="pedestrian">
+        <h3>Pedestrian Crossing</h3>
+        <div class="ped-content">
+          <div id="ped-status" class="ped-status stop">DON'T WALK</div>
+          <div id="ped-timer" class="ped-timer">0s</div>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span>Current State</span>
+          <strong id="stateName">NS GREEN</strong>
+        </div>
+        <div class="stat-card">
+          <span>Seconds In State</span>
+          <strong id="stateSeconds">0</strong>
+        </div>
+        <div class="stat-card">
+          <span>Total Cycles</span>
+          <strong id="cycleCount">0</strong>
+        </div>
+        <div class="stat-card">
+          <span>Mode</span>
+          <strong id="modeLabel">Timed Auto</strong>
+        </div>
+      </div>
+    </section>
+
+    <aside class="side-panel">
+      <section class="controls">
+        <h3>Controls</h3>
+        <button id="startBtn">Start System</button>
+        <button id="stopBtn">Stop System</button>
+        <button id="switchBtn">Manual Switch</button>
+        <button id="pedBtn">Pedestrian Request</button>
+        <button id="clearLog">Clear Log</button>
+      </section>
+
+      <section class="settings">
+        <h3>Simulation Settings</h3>
+        <label for="modeSelect">Control Mode</label>
+        <select id="modeSelect">
+          <option value="timed" selected>Timed Auto</option>
+          <option value="manual">Manual Priority</option>
+        </select>
+
+        <label for="speedRange">Cycle Speed: <span id="speedLabel">Normal</span></label>
+        <input id="speedRange" type="range" min="0.6" max="1.8" step="0.2" value="1" />
+      </section>
+
+      <section class="log">
+        <div class="log-head">
+          <h3>Event Log</h3>
+          <span id="logCount">0 entries</span>
+        </div>
+        <div id="logBox" aria-live="polite"></div>
+      </section>
+    </aside>
+  </main>
+
+  <script src="script.js"></script>
 </body>
 </html>
