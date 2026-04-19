@@ -1,25 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Traffic Light</title>
+    <title>Traffic Control Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>Traffic Light</h1>
+<div class="bg-glow"></div>
 
-<p id="status">Status: Ready</p>
+<div class="container">
 
-<div class="traffic-light">
-    <div class="light red" id="red"></div>
-    <div class="light yellow" id="yellow"></div>
-    <div class="light green" id="green"></div>
-</div>
+    <div class="title">
+        <h1>TRAFFIC CONTROL SYSTEM</h1>
+        <p id="status">Initializing system...</p>
+    </div>
 
-<div class="buttons">
-    <button onclick="changeLight()">Change</button>
-    <button onclick="resetLight()">Reset</button>
-    <button onclick="toggleAuto()">Auto</button>
+    <div class="dashboard">
+
+        <div class="traffic-box">
+            <div class="traffic-light">
+                <div class="light red" id="red"></div>
+                <div class="light yellow" id="yellow"></div>
+                <div class="light green" id="green"></div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button onclick="changeLight()">NEXT SIGNAL</button>
+            <button onclick="resetLight()">RESET</button>
+            <button onclick="toggleAuto()" id="autoBtn">AUTO MODE</button>
+        </div>
+
+    </div>
+
 </div>
 
 <script src="script.js"></script>

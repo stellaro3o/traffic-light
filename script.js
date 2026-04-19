@@ -1,27 +1,19 @@
 let current = localStorage.getItem("light") || "red";
-
 let autoMode = false;
 let interval;
 
-// API STATUS (safe placeholder for your requirement 4)
 fetch("data.json")
     .then(res => res.json())
     .then(data => {
-        document.getElementById("status").innerText =
-            "API: " + data.status;
+        document.getElementById("status").innerText = data.status;
     })
     .catch(() => {
-        document.getElementById("status").innerText =
-            "API: offline mode";
+        document.getElementById("status").innerText = "System offline";
     });
 
 function updateLight() {
-    document.getElementById("red").style.background = "gray";
-    document.getElementById("yellow").style.background = "gray";
-    document.getElementById("green").style.background = "gray";
-
-    document.getElementById(current).style.background = current;
-
+    document.querySelectorAll(".light").forEach(l => l.classList.remove("active"));
+    document.getElementById(current).classList.add("active");
     localStorage.setItem("light", current);
 }
 
@@ -40,13 +32,15 @@ function resetLight() {
 
 function toggleAuto() {
     autoMode = !autoMode;
+    const btn = document.getElementById("autoBtn");
 
     if (autoMode) {
-        interval = setInterval(changeLight, 1500);
+        btn.innerText = "AUTO MODE ACTIVE";
+        interval = setInterval(changeLight, 900);
     } else {
+        btn.innerText = "AUTO MODE";
         clearInterval(interval);
     }
 }
 
 updateLight();
-
