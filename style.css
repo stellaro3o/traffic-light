@@ -1,97 +1,46 @@
 body {
-    margin: 0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #0f172a, #1e293b);
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-/* container */
-.container {
     text-align: center;
+    background: #111;
+    color: white;
+    margin-top: 50px;
 }
 
-/* title */
-h1 {
-    margin-bottom: 20px;
-    font-size: 28px;
-}
-
-/* wrapper */
-.traffic-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* traffic light box */
 .traffic-light {
-    background: #222;
-    padding: 25px;
-    border-radius: 25px;
-    box-shadow: 0 0 25px rgba(0,0,0,0.6);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    width: 120px;
+    margin: 20px auto;
+    padding: 15px;
+    background: #333;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
 }
 
-/* lights */
 .light {
-    width: 70px;
-    height: 70px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    margin: 12px 0;
-    background: #444;
-    transition: 0.3s ease;
-}
-
-/* colors */
-.red.active {
-    background: red;
-    box-shadow: 0 0 25px red;
-}
-
-.yellow.active {
-    background: yellow;
-    box-shadow: 0 0 25px yellow;
-}
-
-.green.active {
-    background: limegreen;
-    box-shadow: 0 0 25px limegreen;
-}
-
-/* buttons */
-.controls {
-    margin-top: 20px;
+    margin: 15px auto;
+    background: gray;
+    transition: 0.3s;
 }
 
 button {
     margin: 5px;
-    padding: 10px 16px;
+    padding: 10px 15px;
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
     cursor: pointer;
-    background: #2563eb;
-    color: white;
     font-weight: bold;
-    transition: 0.2s;
 }
 
 button:hover {
-    background: #1d4ed8;
-    transform: scale(1.05);
-}
-
-/* status text */
-#status {
-    margin-top: 15px;
-    font-size: 14px;
     opacity: 0.8;
 }
+
+.buttons {
+    margin-top: 20px;
+}
+
 
 
   

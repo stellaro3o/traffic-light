@@ -1,60 +1,52 @@
-let lights = ["red", "green", "yellow"];
-let currentIndex = localStorage.getItem("lightIndex");
+let current = localStorage.getItem("light") || "red";
 
-if (currentIndex === null) {
-    currentIndex = 0;
-} else {
-    currentIndex = parseInt(currentIndex);
-}
+let autoMode = false;
+let interval;
 
-let autoInterval = null;
-
-function updateLight() {
-    // reset all
-    lights.forEach(light => {
-        document.getElementById(light).classList.remove("active");
+// API STATUS (safe placeholder for your requirement 4)
+fetch("data.json")
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("status").innerText =
+            "API: " + data.status;
+    })
+    .catch(() => {
+        document.getElementById("status").innerText =
+            "API: offline mode";
     });
 
-    // activate current
-    let currentLight = lights[currentIndex];
-    document.getElementById(currentLight).classList.add("active");
+function updateLight() {
+    document.getElementById("red").style.background = "gray";
+    document.getElementById("yellow").style.background = "gray";
+    document.getElementById("green").style.background = "gray";
 
-    // save state
-    localStorage.setItem("lightIndex", currentIndex);
+    document.getElementById(current).style.background = current;
 
-    document.getElementById("status").innerText =
-        "Status: " + currentLight.toUpperCase() + " light is ON";
+    localStorage.setItem("light", current);
 }
 
 function changeLight() {
-    currentIndex = (currentIndex + 1) % lights.length;
+    if (current === "red") current = "green";
+    else if (current === "green") current = "yellow";
+    else current = "red";
+
     updateLight();
 }
 
 function resetLight() {
-    currentIndex = 0;
+    current = "red";
     updateLight();
-    stopAuto();
 }
 
-function autoMode() {
-    if (autoInterval) {
-        stopAuto();
-        return;
+function toggleAuto() {
+    autoMode = !autoMode;
+
+    if (autoMode) {
+        interval = setInterval(changeLight, 1500);
+    } else {
+        clearInterval(interval);
     }
-
-    autoInterval = setInterval(() => {
-        changeLight();
-    }, 2000);
-
-    document.getElementById("status").innerText = "Status: Auto Mode Running";
 }
 
-function stopAuto() {
-    clearInterval(autoInterval);
-    autoInterval = null;
-    document.getElementById("status").innerText = "Status: Auto Mode Stopped";
-}
-
-// initialize
 updateLight();
+
